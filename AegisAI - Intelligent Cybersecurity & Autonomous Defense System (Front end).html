@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:4000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisAI - Intelligent Cybersecurity &amp; Autonomous Defense System</title>
+  <link rel="stylesheet" href="./AegisAI - Intelligent Cybersecurity &amp; Autonomous Defense System (Front end)_files/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./AegisAI - Intelligent Cybersecurity &amp; Autonomous Defense System (Front end)_files/css2" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Bar & Header -->
+  <header class="header-bar">
+    <div class="brand-section">
+      <div class="brand-icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">
+          AEGIS AI
+          <span class="brand-badge">SOC CORE v3.4</span>
+        </div>
+        <div class="brand-subtitle">Autonomous Real-Time Cyber Threat Detection &amp; Prevention</div>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <div class="status-pill">
+        <span class="status-pulse"></span>
+        <span>TELEMETRY STREAM ACTIVE</span>
+      </div>
+
+      <button id="autoBlockToggle" class="btn-autoblock active" title="Toggle autonomous threat mitigation"><span>🛡️</span> AUTONOMOUS SHIELD: ARMED</button>
+
+      <button class="btn-quick-attack" onclick="window.launchSimulation('ddos')">
+        <span>⚡</span> Quick Test Attack
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs-wrapper">
+    <button class="nav-tab active" data-tab="tab-soc">
+      <span>🛰️</span> SOC Live Telemetry
+    </button>
+    <button class="nav-tab" data-tab="tab-simulator">
+      <span>⚡</span> Attack Simulator (Cyber Range)
+    </button>
+    <button class="nav-tab" data-tab="tab-incidents">
+      <span>🚨</span> Incident Center <span class="tab-badge" id="alertBadgeCount">0</span>
+    </button>
+    <button class="nav-tab" data-tab="tab-ai">
+      <span>🧠</span> AI &amp; ML Analytics
+    </button>
+    <button class="nav-tab" data-tab="tab-ueba">
+      <span>👤</span> Identity &amp; UEBA
+    </button>
+    <button class="nav-tab" data-tab="tab-dlp">
+      <span>🔒</span> Data Protection (DLP)
+    </button>
+    <button class="nav-tab" data-tab="tab-firewall">
+      <span>🛡️</span> Active Defense &amp; Firewall
+    </button>
+    <button class="nav-tab" data-tab="tab-reports">
+      <span>📄</span> Audit Reports
+    </button>
+  </nav>
+
+  <!-- KPI Ribbon -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">Packets Inspected</span>
+        <span class="kpi-icon">📦</span>
+      </div>
+      <div class="kpi-value" id="kpiPackets">51,961</div>
+      <div class="kpi-subtext"><span>⚡</span> Real-time flow aggregation</div>
+    </div>
+
+    <div class="kpi-card success">
+      <div class="kpi-header">
+        <span class="kpi-title">Threats Neutralized</span>
+        <span class="kpi-icon">🛡️</span>
+      </div>
+      <div class="kpi-value" id="kpiThreats" style="color: var(--accent-emerald);">25</div>
+      <div class="kpi-subtext"><span>✓</span> Auto-quarantined at perimeter</div>
+    </div>
+
+    <div class="kpi-card critical">
+      <div class="kpi-header">
+        <span class="kpi-title">Active Alerts</span>
+        <span class="kpi-icon">🚨</span>
+      </div>
+      <div class="kpi-value" id="kpiAlerts" style="color: var(--accent-crimson);">0</div>
+      <div class="kpi-subtext"><span>●</span> Immediate analyst triage</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">ML Classifier Accuracy</span>
+        <span class="kpi-icon">🎯</span>
+      </div>
+      <div class="kpi-value" id="kpiConfidence" style="color: var(--accent-cyan);">98.4%</div>
+      <div class="kpi-subtext"><span>🧠</span> Gradient-Tree Ensemble</div>
+    </div>
+
+    <div class="kpi-card warning">
+      <div class="kpi-header">
+        <span class="kpi-title">DLP Leaks Intercepted</span>
+        <span class="kpi-icon">🔒</span>
+      </div>
+      <div class="kpi-value" id="kpiDlpLeaks" style="color: var(--accent-amber);">2</div>
+      <div class="kpi-subtext"><span>🛡️</span> PCI-DSS / HIPAA protected</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">Engine Uptime</span>
+        <span class="kpi-icon">⏱️</span>
+      </div>
+      <div class="kpi-value" id="kpiUptime">00:06:54</div>
+      <div class="kpi-subtext"><span>●</span> Continuous protection</div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- TAB 1: SOC Live Telemetry -->
+    <div id="tab-soc" class="tab-pane active">
+      <div class="grid-2-1">
+        <!-- Left: Network Visualizer & Flow Chart -->
+        <div>
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">🌐 Live Topological Threat &amp; Network Visualizer</span>
+              <span class="code-font" style="color: var(--accent-cyan);">PERIMETER DEFENSE HUD</span>
+            </div>
+            <div class="card-body" style="padding: 12px;">
+              <div class="threat-map-container">
+                <canvas id="networkVisualizerCanvas" width="1150" height="397"></canvas>
+                <div class="map-overlay-hud">
+                  <div class="hud-legend">
+                    <div class="legend-item"><span class="legend-dot normal"></span> Benign Flow</div>
+                    <div class="legend-item"><span class="legend-dot threat"></span> Malicious Attack Beam</div>
+                    <div class="legend-item"><span class="legend-dot dmz"></span> Aegis AI Shield Node</div>
+                  </div>
+                  <div class="code-font" style="font-size: 11px; color: var(--accent-cyan);">60 FPS LIVE</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">📈 Real-Time Flow Throughput vs Anomaly Deviation</span>
+              <span class="code-font" style="color: var(--text-dim);">SAMPLING INTERVAL: 50ms</span>
+            </div>
+            <div class="card-body" style="padding: 12px; height: 190px;">
+              <canvas id="telemetryChartCanvas" style="width: 100%; height: 100%;" width="1182" height="237"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Live Alert Feed -->
+        <div>
+          <div class="cyber-card" style="height: calc(100% - 20px);">
+            <div class="card-header">
+              <span class="card-title">🚨 Real-Time Security Incident Stream</span>
+              <span class="code-font" style="color: var(--accent-crimson);">LIVE ALERTS</span>
+            </div>
+            <div class="card-body">
+              <div class="alert-feed" id="alertFeed"><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">4:17:28 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>13.107.42.16</b></span>
+          <span>DST: <b>10.0.12.55:3306</b></span>
+          <span>CONF: <b>19%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011648335-922')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">4:16:10 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.189</b></span>
+          <span>DST: <b>54.239.28.85:53</b></span>
+          <span>CONF: <b>19%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011570010-301')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item MEDIUM">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity MEDIUM">MEDIUM</span>
+          <span class="badge-mitre">T1046</span>
+          <span class="alert-title">PORT SCAN</span>
+          <span class="alert-time">4:15:40 pm</span>
+        </div>
+        <div class="alert-desc">Diverse target ports with high rejected TCP reset responses indicating reconnaissance sweep</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>DST: <b>10.0.4.15:48991</b></span>
+          <span>CONF: <b>59%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011540570-463')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1048.003</span>
+          <span class="alert-title">DATA EXFILTRATION</span>
+          <span class="alert-time">4:15:39 pm</span>
+        </div>
+        <div class="alert-desc">Unencrypted sensitive tokens, credit card structures, or identity credentials detected in egress</div>
+        <div class="alert-meta">
+          <span>SRC: <b>10.0.8.22</b></span>
+          <span>DST: <b>185.220.101.5:8080</b></span>
+          <span>CONF: <b>96%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011539730-945')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1078</span>
+          <span class="alert-title">IMPOSSIBLE TRAVEL</span>
+          <span class="alert-time">4:15:36 pm</span>
+        </div>
+        <div class="alert-desc">Impossible travel detected for user 'sarah.jenkins'. Logged in from New York, US and Moscow, RU within 5 min (Required velocity: 90123 km/h across 7510 km).</div>
+        <div class="alert-meta">
+          <span>SRC: <b>193.106.191.24</b></span>
+          <span>DST: <b>Internal Auth Gateway (SSO/IAM):443</b></span>
+          <span>CONF: <b>94%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-AUTH-1793011536652-251')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1078</span>
+          <span class="alert-title">IMPOSSIBLE TRAVEL</span>
+          <span class="alert-time">4:10:36 pm</span>
+        </div>
+        <div class="alert-desc">Impossible travel detected for user 'sarah.jenkins'. Logged in from Moscow, RU and New York, US within 7 min (Required velocity: 60295 km/h across 7510 km).</div>
+        <div class="alert-meta">
+          <span>SRC: <b>198.51.100.14</b></span>
+          <span>DST: <b>Internal Auth Gateway (SSO/IAM):443</b></span>
+          <span>CONF: <b>94%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-AUTH-1793011536652-193')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">T1110.001</span>
+          <span class="alert-title">BRUTE FORCE</span>
+          <span class="alert-time">4:15:35 pm</span>
+        </div>
+        <div class="alert-desc">Rapid sequential authentication failures exceeding normal human error thresholds</div>
+        <div class="alert-meta">
+          <span>SRC: <b>194.26.29.112</b></span>
+          <span>DST: <b>10.0.4.15:22</b></span>
+          <span>CONF: <b>77%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011535848-477')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item MEDIUM">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity MEDIUM">MEDIUM</span>
+          <span class="badge-mitre">T1046</span>
+          <span class="alert-title">PORT SCAN</span>
+          <span class="alert-time">4:15:34 pm</span>
+        </div>
+        <div class="alert-desc">Diverse target ports with high rejected TCP reset responses indicating reconnaissance sweep</div>
+        <div class="alert-meta">
+          <span>SRC: <b>193.106.191.24</b></span>
+          <span>DST: <b>10.0.4.15:80</b></span>
+          <span>CONF: <b>68%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011534962-469')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:34 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>45.154.255.89</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011534021-832')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:33 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>45.154.255.89</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011533537-201')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:26 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011526174-569')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:25 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>193.106.191.24</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525526-273')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:25 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>193.106.191.24</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525366-522')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:25 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>193.106.191.24</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525170-56')">🔍 Inspect</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">4:15:24 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>DST: <b>10.0.4.15:443</b></span>
+          <span>CONF: <b>90%</b></span>
+          <span>STATUS: <b style="color: var(--accent-emerald)">MITIGATED</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011524967-986')">🔍 Inspect</button>
+      </div>
+    </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Attack Simulator (Cyber Range) -->
+    <div id="tab-simulator" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">⚡ Interactive Cyber Attack Simulation Range</span>
+          <span class="code-font" style="color: var(--accent-amber);">LIVE THREAT INJECTION SUITE</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 20px;">
+            Trigger realistic cyber attack scenarios on-demand to observe real-time Machine Learning classification,
+            unsupervised anomaly scoring, automated quarantine, and incident response.
+          </p>
+
+          <div class="simulator-grid">
+            <!-- Attack 1: SYN Flood DDoS -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🌊</div>
+                <div>
+                  <div class="scenario-title">SYN Flood DDoS Attack</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1498.001</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                High-volume packet flood with forged TCP SYN flags designed to exhaust perimeter connection state tables and crash the web server.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('ddos')">
+                <span>⚡</span> Simulate SYN Flood DDoS
+              </button>
+            </div>
+
+            <!-- Attack 2: Port Scan -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🔍</div>
+                <div>
+                  <div class="scenario-title">Reconnaissance Port Sweep</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1046</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                Horizontal stealth port scan sweeping across 15+ services (SSH, RDP, MySQL, Telnet) generating high port entropy and TCP RST spikes.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('port_scan')">
+                <span>⚡</span> Simulate Port Sweep Probe
+              </button>
+            </div>
+
+            <!-- Attack 3: SSH Brute Force -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🔑</div>
+                <div>
+                  <div class="scenario-title">SSH Credential Brute Force</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1110.001</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                Rapid-fire dictionary authentication attack targeting the root administrative account on Port 22, triggering UEBA velocity alarms.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('brute_force')">
+                <span>⚡</span> Simulate SSH Brute Force
+              </button>
+            </div>
+
+            <!-- Attack 4: Impossible Travel -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">✈️</div>
+                <div>
+                  <div class="scenario-title">Impossible Travel Hijacking</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1078</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                User logs in from New York, then 5 minutes later authenticates from Moscow. Haversine velocity calculation flags credential theft.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('impossible_travel')">
+                <span>⚡</span> Simulate Impossible Travel
+              </button>
+            </div>
+
+            <!-- Attack 5: Malware C2 Beaconing -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">👾</div>
+                <div>
+                  <div class="scenario-title">Malware C2 Beaconing</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1071.001</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                Obfuscated command-and-control heartbeats with high Shannon entropy payload on non-standard egress port 4444.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('malware_c2')">
+                <span>⚡</span> Simulate C2 Beaconing
+              </button>
+            </div>
+
+            <!-- Attack 6: Data Exfiltration (DLP) -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">💳</div>
+                <div>
+                  <div class="scenario-title">Sensitive Data Exfiltration (DLP)</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1048.003</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                Outbound database dump containing customer Credit Cards (Luhn verified) and Social Security Numbers, triggering instant DLP interception.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('data_exfil')">
+                <span>⚡</span> Simulate Data Exfiltration
+              </button>
+            </div>
+
+            <!-- Attack 7: Zero-Day Polymorphic Anomaly -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🧬</div>
+                <div>
+                  <div class="scenario-title">Zero-Day Network Anomaly</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1205</div>
+                </div>
+              </div>
+              <div class="scenario-desc">
+                Atypical multivariate feature pattern with high statistical Mahalanobis distance that bypasses static signatures and triggers unsupervised AI.
+              </div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('zero_day')">
+                <span>⚡</span> Simulate Zero-Day Anomaly
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Incident Center -->
+    <div id="tab-incidents" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">🚨 Incident Center &amp; Threat Triage Feed</span>
+          <span class="code-font" style="color: var(--accent-cyan);">ENTERPRISE SOC LOG</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Incident ID</th>
+                  <th>Severity</th>
+                  <th>Threat Vector</th>
+                  <th>Source IP</th>
+                  <th>Target Destination</th>
+                  <th>AI Confidence</th>
+                  <th>Anomaly Score</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="alertTableBody">
+      <tr>
+        <td class="code-font">ALT-1793011648335-922</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">13.107.42.16</td>
+        <td class="code-font">10.0.12.55:3306</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.71</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011648335-922')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011570010-301</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.189</td>
+        <td class="code-font">54.239.28.85:53</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.67</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011570010-301')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011540570-463</td>
+        <td><span class="badge-severity MEDIUM">MEDIUM</span></td>
+        <td><b>PORT SCAN</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font">10.0.4.15:48991</td>
+        <td><b>59%</b></td>
+        <td class="code-font">0.93</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011540570-463')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011539730-945</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DATA EXFILTRATION</b></td>
+        <td class="code-font">10.0.8.22</td>
+        <td class="code-font">185.220.101.5:8080</td>
+        <td><b>96%</b></td>
+        <td class="code-font">0.90</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011539730-945')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-AUTH-1793011536652-251</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>IMPOSSIBLE TRAVEL</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td class="code-font">Internal Auth Gateway (SSO/IAM):443</td>
+        <td><b>94%</b></td>
+        <td class="code-font">0.88</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-AUTH-1793011536652-251')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-AUTH-1793011536652-193</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>IMPOSSIBLE TRAVEL</b></td>
+        <td class="code-font">198.51.100.14</td>
+        <td class="code-font">Internal Auth Gateway (SSO/IAM):443</td>
+        <td><b>94%</b></td>
+        <td class="code-font">0.88</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-AUTH-1793011536652-193')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011535848-477</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>BRUTE FORCE</b></td>
+        <td class="code-font">194.26.29.112</td>
+        <td class="code-font">10.0.4.15:22</td>
+        <td><b>77%</b></td>
+        <td class="code-font">0.14</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011535848-477')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011534962-469</td>
+        <td><span class="badge-severity MEDIUM">MEDIUM</span></td>
+        <td><b>PORT SCAN</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td class="code-font">10.0.4.15:80</td>
+        <td><b>68%</b></td>
+        <td class="code-font">0.89</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011534962-469')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011534021-832</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011534021-832')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011533537-201</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011533537-201')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011526174-569</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011526174-569')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011525526-273</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525526-273')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011525366-522</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525366-522')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011525170-56</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011525170-56')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011524967-986</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011524967-986')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011524658-867</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">185.220.101.5</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011524658-867')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011521570-432</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">185.220.101.5</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011521570-432')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011513786-56</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011513786-56')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793011379528-466</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">13.107.42.16</td>
+        <td class="code-font">10.0.8.22:443</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.65</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793011379528-466')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793010839514-792</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">10.0.12.55</td>
+        <td class="code-font">54.239.28.85:443</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.68</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793010839514-792')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-AUTH-1793010788242-171</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>IMPOSSIBLE TRAVEL</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font">Internal Auth Gateway (SSO/IAM):443</td>
+        <td><b>94%</b></td>
+        <td class="code-font">0.88</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-AUTH-1793010788242-171')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793010777924-697</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DATA EXFILTRATION</b></td>
+        <td class="code-font">10.0.8.22</td>
+        <td class="code-font">185.220.101.5:8080</td>
+        <td><b>96%</b></td>
+        <td class="code-font">0.90</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793010777924-697')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793010754638-46</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font">10.0.4.15:443</td>
+        <td><b>90%</b></td>
+        <td class="code-font">0.95</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793010754638-46')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793010724838-897</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.189</td>
+        <td class="code-font">13.107.42.16:53</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.76</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793010724838-897')">Inspect</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793010637891-982</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">142.250.190.46</td>
+        <td class="code-font">192.168.1.102:443</td>
+        <td><b>19%</b></td>
+        <td class="code-font">0.80</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793010637891-982')">Inspect</button>
+          
+        </td>
+      </tr>
+    </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: AI & ML Analytics -->
+    <div id="tab-ai" class="tab-pane">
+      <div class="grid-1-1">
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🧠 Supervised Threat Classifier Architecture</span>
+            <span class="badge-mitre">GRADIENT-TREE ENSEMBLE</span>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <b>Model Specification:</b>
+                <div class="code-font" style="color: var(--accent-cyan); margin-top: 4px;">Aegis Ensemble Gradient-Tree v3.4</div>
+              </div>
+              <div>
+                <b>Trained Feature Inputs:</b>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                  <span class="badge-mitre">packet_rate</span>
+                  <span class="badge-mitre">byte_rate</span>
+                  <span class="badge-mitre">syn_ratio</span>
+                  <span class="badge-mitre">rst_ratio</span>
+                  <span class="badge-mitre">port_entropy</span>
+                  <span class="badge-mitre">payload_entropy</span>
+                  <span class="badge-mitre">failed_auth_count</span>
+                  <span class="badge-mitre">sensitive_match_count</span>
+                </div>
+              </div>
+              <div>
+                <b>Explainable AI (XAI) Attribution:</b>
+                <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+                  Every threat decision includes automated feature attribution, identifying exactly which statistical deviations triggered the classification to assist SOC analysts in root cause analysis.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">📊 Unsupervised Dynamic Isolation Anomaly Engine</span>
+            <span class="badge-mitre">MULTIVARIATE DISTANCE</span>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <b>Continuous Baseline Learning:</b>
+                <div style="color: var(--accent-emerald); font-size: 13px; font-weight: 600; margin-top: 4px;">
+                  ✓ Actively adapting rolling Gaussian centroid from verified benign flows
+                </div>
+              </div>
+              <div>
+                <b>Dynamic Anomaly Threshold:</b>
+                <div class="code-font" style="color: var(--accent-amber); margin-top: 4px;">0.65 (98.5th Percentile Deviation)</div>
+              </div>
+              <div>
+                <b>Zero-Day Resilience:</b>
+                <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+                  Calculates standardized Mahalanobis distance across 6 feature dimensions. Detects polymorphic payloads, covert channels, and novel zero-day exploits without requiring prior signature rules.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Identity & UEBA -->
+    <div id="tab-ueba" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">👤 User and Entity Behavior Analytics (UEBA) Stream</span>
+          <span class="code-font" style="color: var(--accent-blue);">AUTHENTICATION RADAR</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 16px;">
+            Continuously monitors login frequency, impossible travel between geographic coordinates, and credential stuffing attempts.
+          </p>
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Target Account</th>
+                  <th>Source IP</th>
+                  <th>Geographic Location</th>
+                  <th>Auth Status</th>
+                  <th>Entity Risk Score</th>
+                  <th>Behavioral Analysis</th>
+                </tr>
+              </thead>
+              <tbody id="uebaTableBody">
+      <tr>
+        <td class="code-font">4:15:36 pm</td>
+        <td><b>sarah.jenkins</b></td>
+        <td class="code-font">193.106.191.24</td>
+        <td>Moscow, RU</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 700;">SUCCESS</span></td>
+        <td><span class="badge-severity CRITICAL">90 / 100</span></td>
+        <td style="color: var(--text-muted); font-size: 11px;">Impossible travel detected for user 'sarah.jenkins'. Logged in from New York, US and Moscow, RU within 5 min (Required velocity: 90123 km/h across 7510 km).</td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">4:10:36 pm</td>
+        <td><b>sarah.jenkins</b></td>
+        <td class="code-font">198.51.100.14</td>
+        <td>New York, US</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 700;">SUCCESS</span></td>
+        <td><span class="badge-severity CRITICAL">90 / 100</span></td>
+        <td style="color: var(--text-muted); font-size: 11px;">Impossible travel detected for user 'sarah.jenkins'. Logged in from Moscow, RU and New York, US within 7 min (Required velocity: 60295 km/h across 7510 km).</td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">4:15:35 pm</td>
+        <td><b>admin</b></td>
+        <td class="code-font">194.26.29.112</td>
+        <td>Moscow, RU</td>
+        <td><span style="color: var(--accent-crimson); font-weight: 700;">FAILED</span></td>
+        <td><span class="badge-severity LOW">20 / 100</span></td>
+        <td style="color: var(--text-muted); font-size: 11px;">Standard baseline login</td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">4:03:08 pm</td>
+        <td><b>sarah.jenkins</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td>Moscow, RU</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 700;">SUCCESS</span></td>
+        <td><span class="badge-severity CRITICAL">90 / 100</span></td>
+        <td style="color: var(--text-muted); font-size: 11px;">Impossible travel detected for user 'sarah.jenkins'. Logged in from New York, US and Moscow, RU within 5 min (Required velocity: 90123 km/h across 7510 km).</td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">3:58:08 pm</td>
+        <td><b>sarah.jenkins</b></td>
+        <td class="code-font">198.51.100.14</td>
+        <td>New York, US</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 700;">SUCCESS</span></td>
+        <td><span class="badge-severity LOW">0 / 100</span></td>
+        <td style="color: var(--text-muted); font-size: 11px;">Standard baseline login</td>
+      </tr>
+    </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Data Protection & DLP -->
+    <div id="tab-dlp" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">🔒 Data Loss Prevention (DLP) &amp; Sensitive Egress Monitor</span>
+          <span class="badge-mitre">PCI-DSS / HIPAA / SOC 2</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 16px;">
+            Deep Packet Inspection (DPI) verifies payload data in real-time, executing Luhn checksum validation on Credit Cards and regex parsing for SSNs and cloud API keys.
+          </p>
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Source Asset</th>
+                  <th>Destination Target</th>
+                  <th>Compliance Standard</th>
+                  <th>Patterns Found</th>
+                  <th>Masked Preview</th>
+                  <th>Enforcement Action</th>
+                </tr>
+              </thead>
+              <tbody id="dlpTableBody">
+      <tr>
+        <td class="code-font">4:15:39 pm</td>
+        <td class="code-font">10.0.8.22</td>
+        <td class="code-font">185.220.101.5</td>
+        <td><span class="badge-mitre">PCI-DSS, HIPAA / GLBA, SOC 2</span></td>
+        <td><b style="color: var(--accent-amber);">5 record(s)</b></td>
+        <td class="code-font" style="color: var(--accent-cyan);">4532-****-****-9813</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ INTERCEPTED &amp; MASKED</span></td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">4:02:57 pm</td>
+        <td class="code-font">10.0.8.22</td>
+        <td class="code-font">185.220.101.5</td>
+        <td><span class="badge-mitre">PCI-DSS, HIPAA / GLBA, SOC 2</span></td>
+        <td><b style="color: var(--accent-amber);">5 record(s)</b></td>
+        <td class="code-font" style="color: var(--accent-cyan);">4532-****-****-9813</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ INTERCEPTED &amp; MASKED</span></td>
+      </tr>
+    </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: Active Defense & Firewall -->
+    <div id="tab-firewall" class="tab-pane">
+      <div class="grid-2-1">
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🛡️ Quarantined IP Blacklist</span>
+            <span class="code-font" style="color: var(--accent-emerald);">AUTOMATED ACTIVE DROP</span>
+          </div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>Offending IP Address</th>
+                    <th>Quarantine Reason</th>
+                    <th>Blocked At</th>
+                    <th>Firewall Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="firewallTableBody">
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">45.154.255.89</b></td>
+        <td>Autonomous block: Detected DDOS_SYN_FLOOD (Confidence: 90%)</td>
+        <td class="code-font">4:02:34 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('45.154.255.89')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">185.220.101.5</b></td>
+        <td>Autonomous block: Detected DDOS_SYN_FLOOD (Confidence: 90%)</td>
+        <td class="code-font">4:15:21 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('185.220.101.5')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">91.240.118.172</b></td>
+        <td>Autonomous block: Detected DDOS_SYN_FLOOD (Confidence: 90%)</td>
+        <td class="code-font">4:15:24 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('91.240.118.172')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">193.106.191.24</b></td>
+        <td>Autonomous block: Detected DDOS_SYN_FLOOD (Confidence: 90%)</td>
+        <td class="code-font">4:15:25 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('193.106.191.24')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">194.26.29.112</b></td>
+        <td>Autonomous block: Detected BRUTE_FORCE (Confidence: 77%)</td>
+        <td class="code-font">4:15:35 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('194.26.29.112')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">198.51.100.14</b></td>
+        <td>Autonomous block: Detected IMPOSSIBLE_TRAVEL (Confidence: 94%)</td>
+        <td class="code-font">4:15:36 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('198.51.100.14')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">10.0.8.22</b></td>
+        <td>Manual analyst mitigation for alert ALT-1793010777924-697</td>
+        <td class="code-font">4:15:49 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('10.0.8.22')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">13.107.42.16</b></td>
+        <td>Manual analyst mitigation for alert ALT-1793011379528-466</td>
+        <td class="code-font">4:15:48 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('13.107.42.16')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">10.0.12.55</b></td>
+        <td>Manual analyst mitigation for alert ALT-1793010839514-792</td>
+        <td class="code-font">4:15:48 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('10.0.12.55')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">192.168.1.189</b></td>
+        <td>Manual analyst mitigation for alert ALT-1793010724838-897</td>
+        <td class="code-font">4:15:51 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('192.168.1.189')">Unblock</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">142.250.190.46</b></td>
+        <td>Manual analyst mitigation for alert ALT-1793010637891-982</td>
+        <td class="code-font">4:15:52 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('142.250.190.46')">Unblock</button>
+        </td>
+      </tr>
+    </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">⚙️ Manual Quarantine Control</span>
+          </div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">IP Address to Block</label>
+              <input type="text" id="manualBlockIpInput" class="form-input" placeholder="e.g. 198.51.100.42">
+            </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label class="form-label">Quarantine Reason</label>
+              <input type="text" id="manualBlockReasonInput" class="form-input" placeholder="Suspicious activity / threat intelligence">
+            </div>
+            <button class="btn-launch-attack" style="width: 100%; justify-content: center;" onclick="
+              const ip = document.getElementById('manualBlockIpInput').value.trim();
+              const reason = document.getElementById('manualBlockReasonInput').value.trim();
+              if (ip) {
+                fetch('/api/firewall/block', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ ip, reason })
+                }).then(() =&gt; location.reload());
+              }
+            ">
+              Apply Quarantine Rule
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 8: Security Audit Reports -->
+    <div id="tab-reports" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">📄 Security Audit &amp; Forensic Incident Report</span>
+          <button id="btnExportReport" class="btn-mitigate">📥 Export JSON Audit Report</button>
+        </div>
+        <div class="card-body">
+          <div style="background: rgba(11, 17, 30, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; font-family: var(--font-sans);">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 16px;">
+              <div>
+                <h2 style="font-size: 20px; color: #fff;">AegisAI Enterprise Threat &amp; Incident Audit Report</h2>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Audit Framework: NIST SP 800-61 Rev. 2 &amp; ISO/IEC 27001:2022</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="status-pill" style="display: inline-flex;">VERIFIED PROTECTED</span>
+              </div>
+            </div>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">1. Executive Summary</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+              During the active monitoring window, the AegisAI autonomous cyber defense engine continuously analyzed network flows across edge ingress, DMZ servers, and internal database segments. Using ensemble machine learning and unsupervised anomaly scoring, zero-day deviations and active attack vectors were quarantined within milliseconds, maintaining zero unauthorized data loss.
+            </p>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">2. Regulatory Compliance Status</h3>
+            <ul style="color: var(--text-muted); padding-left: 20px; line-height: 1.8; margin-bottom: 16px;">
+              <li><b>NIST SP 800-61 Rev. 2:</b> Automated Incident Detection &amp; Containment playbooks active.</li>
+              <li><b>PCI-DSS Requirement 11.5:</b> Automated deep packet inspection &amp; credit card token masking enforced.</li>
+              <li><b>SOC 2 Type II:</b> Continuous audit trail &amp; real-time identity anomaly monitoring operational.</li>
+            </ul>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">3. Recommended Security Actions</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">
+              Commit auto-generated firewall rules to edge BGP routing tables. Enforce biometric FIDO2 authentication for accounts flagged in UEBA impossible travel audits.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Deep Forensic Inspection Modal -->
+  <div id="inspectModal" class="modal-backdrop">
+    <div class="cyber-modal">
+      <div class="modal-header">
+        <span class="modal-title">🔍 Incident Forensics &amp; Explainable AI</span>
+        <button class="modal-close" onclick="document.getElementById('inspectModal').classList.remove('show')">✕</button>
+      </div>
+      <div class="modal-body" id="inspectModalContent">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./AegisAI - Intelligent Cybersecurity &amp; Autonomous Defense System (Front end)_files/charts.js.download"></script>
+  <script src="./AegisAI - Intelligent Cybersecurity &amp; Autonomous Defense System (Front end)_files/app.js.download"></script>
+
+
+</body></html>
